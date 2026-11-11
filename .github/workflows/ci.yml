@@ -1,5 +1,18 @@
 name: ci
-on: [pull_request]
+on:
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      secure-registry:
+        description: 'Harden-Runner secure-registry input'
+        type: choice
+        options: ['false', 'true']
+        default: 'false'
+
+permissions:
+  contents: read
+  id-token: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -7,6 +20,12 @@ jobs:
       matrix:
         node-version: [20.x, 22.x, 24.x]
     steps:
+      - name: Harden-Runner
+        uses: sailikhith-stepsecurity/harden-runner@int/sr-ci-12.1-binding-summary
+        with:
+          egress-policy: audit
+          secure-registry: ${{ inputs.secure-registry || 'false' }}
+
       - uses: actions/checkout@v4
 
       - name: Use Node.js ${{ matrix.node-version }}
