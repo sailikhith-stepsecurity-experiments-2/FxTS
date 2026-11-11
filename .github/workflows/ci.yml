@@ -4,10 +4,10 @@ on:
   workflow_dispatch:
     inputs:
       secure-registry:
-        description: 'Harden-Runner secure-registry input'
+        description: "Harden-Runner secure-registry input"
         type: choice
-        options: ['false', 'true']
-        default: 'false'
+        options: ["false", "true"]
+        default: "false"
 
 permissions:
   contents: read
